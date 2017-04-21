@@ -2317,9 +2317,9 @@ out_S3_C2_RE = _mm256_sub_ps(out_S3_C2_RE, _mm256_mul_ps(beta_vec , ub_S1_C2_RE)
 out_S3_C2_IM = _mm256_sub_ps(out_S3_C2_IM, _mm256_mul_ps(beta_vec , ub_S1_C2_IM));
 }
 __m256 mu_vec = _mm256_setzero_ps();
+__m256 mu_inv_vec = _mm256_setzero_ps();
 mu_vec = _mm256_broadcast_ss((&mu));
 
-__m256 mu_inv_vec = _mm256_setzero_ps();
 mu_inv_vec = _mm256_broadcast_ss((&muinv));
 
 tmp_1_re = _mm256_add_ps(_mm256_mul_ps(mu_vec, out_S0_C0_IM), out_S0_C0_RE );

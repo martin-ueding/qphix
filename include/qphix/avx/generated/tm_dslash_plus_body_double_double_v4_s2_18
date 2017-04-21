@@ -3339,9 +3339,9 @@ out_S3_C2_RE = _mm256_sub_pd(out_S3_C2_RE, _mm256_mul_pd(beta_vec , ub_S1_C2_RE)
 out_S3_C2_IM = _mm256_sub_pd(out_S3_C2_IM, _mm256_mul_pd(beta_vec , ub_S1_C2_IM));
 }
 __m256d mu_vec = _mm256_setzero_pd();
+__m256d mu_inv_vec = _mm256_setzero_pd();
 mu_vec = _mm256_broadcast_sd((&mu));
 
-__m256d mu_inv_vec = _mm256_setzero_pd();
 mu_inv_vec = _mm256_broadcast_sd((&muinv));
 
 tmp_1_re = _mm256_add_pd(_mm256_mul_pd(mu_vec, out_S0_C0_IM), out_S0_C0_RE );

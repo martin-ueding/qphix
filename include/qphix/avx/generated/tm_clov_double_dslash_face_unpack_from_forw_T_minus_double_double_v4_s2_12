@@ -77,8 +77,6 @@ __m256d tmp_3_im = _mm256_setzero_pd();
 __m256d tmp_4_re = _mm256_setzero_pd();
 __m256d tmp_4_im = _mm256_setzero_pd();
 __m256d zero = _mm256_setzero_pd();
- _mm_prefetch((const char *)( (((inbuf) + hsprefdist)+0) ), _MM_HINT_T1);
-
 zero = _mm256_setzero_pd(); 
 __m256d dout_S0_C0_RE = _mm256_setzero_pd();
 __m256d dout_S0_C0_IM = _mm256_setzero_pd();
@@ -203,10 +201,6 @@ dout_S3_C1_RE = _mm256_setzero_pd();
 dout_S3_C1_IM = _mm256_setzero_pd(); 
 dout_S3_C2_RE = _mm256_setzero_pd(); 
 dout_S3_C2_IM = _mm256_setzero_pd(); 
- _mm_prefetch((const char *)( ((inbuf)+0) ), _MM_HINT_T0);
-
- _mm_prefetch((const char *)( ((inbuf)+8) ), _MM_HINT_T0);
-
 out_S0_C0_RE = _mm256_setzero_pd();
 out_S0_C0_RE =  _mm256_insertf128_pd(out_S0_C0_RE, _mm_load_pd(((*oBase)[0][0][0] + offs[0])), 0);
 
@@ -224,8 +218,6 @@ out_S1_C0_RE =  _mm256_insertf128_pd(out_S1_C0_RE, _mm_load_pd(((*oBase)[0][1][0
 
 out_S1_C0_IM = _mm256_setzero_pd();
 out_S1_C0_IM =  _mm256_insertf128_pd(out_S1_C0_IM, _mm_load_pd(((*oBase)[0][1][1] + offs[0])), 0);
-
- _mm_prefetch((const char *)( (((inbuf) + hsprefdist)+8) ), _MM_HINT_T1);
 
 out_S1_C0_IM =  _mm256_insertf128_pd(out_S1_C0_IM, _mm_load_pd(((*oBase)[0][1][1] + offs[2])), 1);
 
@@ -428,8 +420,6 @@ ub_S0_C1_IM = _mm256_add_pd(_mm256_mul_pd(u_21_im, b_S0_C2_RE), ub_S0_C1_IM );
 ub_S0_C2_RE = _mm256_mul_pd( u_02_re , b_S0_C0_RE );
 ub_S0_C2_RE = _mm256_sub_pd(ub_S0_C2_RE, _mm256_mul_pd(u_02_im , b_S0_C0_IM));
 ub_S0_C2_IM = _mm256_mul_pd( u_02_re , b_S0_C0_IM );
- _mm_prefetch((const char *)( (((inbuf) + hsprefdist)+16) ), _MM_HINT_T1);
-
 ub_S0_C2_IM = _mm256_add_pd(_mm256_mul_pd(u_02_im, b_S0_C0_RE), ub_S0_C2_IM );
 ub_S0_C2_RE = _mm256_add_pd(_mm256_mul_pd(u_12_re, b_S0_C1_RE), ub_S0_C2_RE );
 ub_S0_C2_RE = _mm256_sub_pd(ub_S0_C2_RE, _mm256_mul_pd(u_12_im , b_S0_C1_IM));
@@ -633,8 +623,6 @@ cl_full_52_IM = _mm256_load_pd((*clBase).block1[5][2][1]);
 
 cl_full_53_RE = _mm256_load_pd((*clBase).block1[5][3][0]);
 
- _mm_prefetch((const char *)( (((inbuf) + hsprefdist)+24) ), _MM_HINT_T1);
-
 cl_full_53_IM = _mm256_load_pd((*clBase).block1[5][3][1]);
 
 cl_full_54_RE = _mm256_load_pd((*clBase).block1[5][4][0]);
@@ -776,8 +764,6 @@ out_S1_C2_IM = _mm256_add_pd(_mm256_mul_pd(cl_full_51_IM, dout_S0_C1_RE), out_S1
 out_S1_C2_RE = _mm256_add_pd(_mm256_mul_pd(cl_full_52_RE, dout_S0_C2_RE), out_S1_C2_RE );
 out_S1_C2_RE = _mm256_sub_pd(out_S1_C2_RE, _mm256_mul_pd(cl_full_52_IM , dout_S0_C2_IM));
 out_S1_C2_IM = _mm256_add_pd(_mm256_mul_pd(cl_full_52_RE, dout_S0_C2_IM), out_S1_C2_IM );
- _mm_prefetch((const char *)( (((inbuf) + hsprefdist)+32) ), _MM_HINT_T1);
-
 out_S1_C2_IM = _mm256_add_pd(_mm256_mul_pd(cl_full_52_IM, dout_S0_C2_RE), out_S1_C2_IM );
 out_S1_C2_RE = _mm256_add_pd(_mm256_mul_pd(cl_full_53_RE, dout_S1_C0_RE), out_S1_C2_RE );
 out_S1_C2_RE = _mm256_sub_pd(out_S1_C2_RE, _mm256_mul_pd(cl_full_53_IM , dout_S1_C0_IM));
@@ -986,8 +972,6 @@ out_S2_C1_IM = _mm256_add_pd(_mm256_mul_pd(cl_full_15_IM, dout_S3_C2_RE), out_S2
 out_S2_C2_RE = _mm256_add_pd(_mm256_mul_pd(cl_full_20_RE, dout_S2_C0_RE), out_S2_C2_RE );
 out_S2_C2_RE = _mm256_sub_pd(out_S2_C2_RE, _mm256_mul_pd(cl_full_20_IM , dout_S2_C0_IM));
 out_S2_C2_IM = _mm256_add_pd(_mm256_mul_pd(cl_full_20_RE, dout_S2_C0_IM), out_S2_C2_IM );
- _mm_prefetch((const char *)( (((inbuf) + hsprefdist)+40) ), _MM_HINT_T1);
-
 out_S2_C2_IM = _mm256_add_pd(_mm256_mul_pd(cl_full_20_IM, dout_S2_C0_RE), out_S2_C2_IM );
 out_S2_C2_RE = _mm256_add_pd(_mm256_mul_pd(cl_full_21_RE, dout_S2_C1_RE), out_S2_C2_RE );
 out_S2_C2_RE = _mm256_sub_pd(out_S2_C2_RE, _mm256_mul_pd(cl_full_21_IM , dout_S2_C1_IM));

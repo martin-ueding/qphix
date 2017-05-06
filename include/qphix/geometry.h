@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 
 #if defined(QPHIX_AVX_SOURCE) || defined(QPHIX_AVX2_SOURCE) || defined(QPHIX_AVX512_SOURCE)
 #include <immintrin.h>

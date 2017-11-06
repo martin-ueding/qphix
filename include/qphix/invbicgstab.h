@@ -160,7 +160,7 @@ class InvBiCGStab : public AbstractSolver<FT,
           rho_c, r0, r, geom, innerProductThreads);
       site_flops += 8 * 12 * num_flav;
 
-      if ((rho_c[0] == 0) && (rho_c[1] == 0)) {
+      if ((rho_c[0] == 0.0) && (rho_c[1] == 0.0)) {
         masterPrintf("BICGSTAB: Breakdown in iteration %d. rho = 0\n", k);
 
         rsd_sq_final = r_norm;

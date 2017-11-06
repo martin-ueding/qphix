@@ -522,10 +522,10 @@ void innerProduct(double results[2],
                   const typename Geometry<FT, V, S, compress>::FourSpinorBlock *y,
                   const Geometry<FT, V, S, compress> &geom,
                   int n_blas_simt,
-                  bool globalSum=true)
+                  bool globalSum = true)
 {
-  results[0] = (double) 0;
-  results[1] = (double) 0;
+  results[0] = 0.0;
+  results[1] = 0.0;
 
   InnerProductFunctor<FT, V, S, compress> f(x, y);
   siteLoop2Reductions<FT, V, S, compress, InnerProductFunctor<FT, V, S, compress>>(

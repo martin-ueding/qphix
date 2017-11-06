@@ -33,6 +33,18 @@ void zeroSpinor(FullSpinor<FT,V,S,compress>& result,
   }
 
 }
+
+template<typename FT, int V, int S, bool compress>
+void axSpinor(const double alpha,
+              FullSpinor<FT,V,S,compress>& x,
+              const Geometry<FT,V,S,compress>& geom,
+              int n_blas_simt)
+{
+  for(int cb=0; cb < 2; ++cb) {
+    ax<FT,V,S,compress>(alpha, x.getCBData(cb),geom,n_blas_simt);
+  }
+
+}
 // Complex AXPY
 template<typename FT, int V, int S, bool compress>
 void caxpySpinor(double alpha[2],
@@ -56,6 +68,30 @@ void axpySpinor(double alpha,
 {
   for(int cb=0; cb < 2; ++cb) {
     axpy<FT,V,S,compress>(alpha, x.getCBData(cb), y.getCBData(cb), geom, n_blas_simt);
+  }
+}
+
+// Real AXPY
+template<typename FT, int V, int S, bool compress>
+void ypeqxSpinor(const FullSpinor<FT,V,S,compress>& x,
+    FullSpinor<FT,V,S,compress>& y,
+    const Geometry<FT,V,S,compress>& geom,
+    int n_blas_simt)
+{
+  for(int cb=0; cb < 2; ++cb) {
+    ypeqx<FT,V,S,compress>(x.getCBData(cb), y.getCBData(cb), geom, n_blas_simt);
+  }
+}
+
+// Real AXPY
+template<typename FT, int V, int S, bool compress>
+void ymeqxSpinor(const FullSpinor<FT,V,S,compress>& x,
+    FullSpinor<FT,V,S,compress>& y,
+    const Geometry<FT,V,S,compress>& geom,
+    int n_blas_simt)
+{
+  for(int cb=0; cb < 2; ++cb) {
+    ymeqx<FT,V,S,compress>(x.getCBData(cb), y.getCBData(cb), geom, n_blas_simt);
   }
 }
 

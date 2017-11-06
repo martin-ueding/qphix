@@ -21,11 +21,8 @@ template <typename FT,
           bool compress12,
           typename EvenOddLinearOperatorBase =
               EvenOddLinearOperator<FT, V, S, compress12>>
-class InvBiCGStab : public AbstractSolver<FT,
-                                          V,
-                                          S,
-                                          compress12,
-                                          EvenOddLinearOperatorBase::num_flav>
+class InvBiCGStab
+    : public AbstractSolver<FT, V, S, compress12, EvenOddLinearOperatorBase::num_flav>
 {
  public:
   typedef typename Geometry<FT, V, S, compress12>::FourSpinorBlock Spinor;
@@ -87,7 +84,7 @@ class InvBiCGStab : public AbstractSolver<FT,
                   int isign,
                   bool verbose,
                   int cb = 1,
-		  QPhiX::ResiduumType residType=QPhiX::RELATIVE) const override
+                  QPhiX::ResiduumType residType = QPhiX::RELATIVE) const override
   {
     site_flops = 0;
     mv_apps = 0;
@@ -98,21 +95,19 @@ class InvBiCGStab : public AbstractSolver<FT,
     site_flops += 4 * 12 * num_flav;
 
     double rsd_sq = RsdTarget * RsdTarget;
-    if ( residType == QPhiX::RELATIVE) {
-      if( verbose ) {
+    if (residType == QPhiX::RELATIVE) {
+      if (verbose) {
         masterPrintf("BICGSTAB: Relative Residuum requested\n");
       }
       rsd_sq *= rhs_sq;
-    }
-    else {
-      if( verbose ){
-          	masterPrintf("BICGSTAB: Absolute Residuum requested\n");
+    } else {
+      if (verbose) {
+        masterPrintf("BICGSTAB: Absolute Residuum requested\n");
       }
     }
 
     if (verbose)
-    	masterPrintf("BICGSTAB: Target Rsd= %e\n", rsd_sq);
-
+      masterPrintf("BICGSTAB: Target Rsd= %e\n", rsd_sq);
 
     // Compute r=r0=rhs - A x
     // A(r0,psi,isign)
@@ -124,13 +119,14 @@ class InvBiCGStab : public AbstractSolver<FT,
     site_flops += 24 * num_flav;
 
     // Check norm of r0
-    norm2Spinor<FT,V,S,compress12, num_flav>(r_norm, r0, geom, norm2Threads);
-    if( r_norm < rsd_sq ) {
-    	masterPrintf("BICGSTAB converged at iter 0: ||r||=%16.8e target=%16.8e\n",
-    			  	  sqrt(r_norm), sqrt(rsd_sq) );
-    	rsd_sq_final = r_norm;
-    	n_iters = 0;
-        return;
+    norm2Spinor<FT, V, S, compress12, num_flav>(r_norm, r0, geom, norm2Threads);
+    if (r_norm < rsd_sq) {
+      masterPrintf("BICGSTAB converged at iter 0: ||r||=%16.8e target=%16.8e\n",
+                   sqrt(r_norm),
+                   sqrt(rsd_sq));
+      rsd_sq_final = r_norm;
+      n_iters = 0;
+      return;
     }
     // r = r0
     copySpinor<FT, V, S, compress12, num_flav>(r, r0, geom, copyThreads);
@@ -245,8 +241,7 @@ class InvBiCGStab : public AbstractSolver<FT,
       site_flops += 28 * 12 * num_flav;
 
       if (verbose)
-        masterPrintf(
-            "BICGSTAB: iter %d r_norm = %e  target = %e \n", k, r_norm, rsd_sq);
+        masterPrintf("BICGSTAB: iter %d r_norm = %e  target = %e \n", k, r_norm, rsd_sq);
       if (r_norm < rsd_sq) {
         notConvP = false; // Converged
       }
@@ -277,8 +272,7 @@ class InvBiCGStab : public AbstractSolver<FT,
     res[1] = (l[1] * r[0] - l[0] * r[1]) * tmp;
   }
 
-  inline void
-  complex_mul(double res[2], const double mul1[2], const double mul2[2]) const
+  inline void complex_mul(double res[2], const double mul1[2], const double mul2[2]) const
   {
     res[0] = mul1[0] * mul2[0] - mul1[1] * mul2[1];
     res[1] = mul1[0] * mul2[1] + mul1[1] * mul2[0];
@@ -351,9 +345,8 @@ class InvBiCGStab : public AbstractSolver<FT,
       }
       double stop_time = omp_get_wtime();
       double best_time = stop_time - start_time;
-      masterPrintf("tuneXMYThreads: threads = %d, current_time=%g (s)\n",
-                   xmyThreads,
-                   best_time);
+      masterPrintf(
+          "tuneXMYThreads: threads = %d, current_time=%g (s)\n", xmyThreads, best_time);
       for (int threads = 2; threads <= geom.getNSIMT(); threads++) {
         start_time = omp_get_wtime();
         for (int i = 0; i < iters; i++) {
@@ -362,11 +355,10 @@ class InvBiCGStab : public AbstractSolver<FT,
         stop_time = omp_get_wtime();
         double current_time = stop_time - start_time;
 
-        masterPrintf(
-            "tuneXMYThreads: threads = %d, current_time = %g (s), best=%g(s)\n",
-            threads,
-            current_time,
-            best_time);
+        masterPrintf("tuneXMYThreads: threads = %d, current_time = %g (s), best=%g(s)\n",
+                     threads,
+                     current_time,
+                     best_time);
         if (current_time < best_time) {
           best_time = current_time;
           xmyThreads = threads;
@@ -390,9 +382,8 @@ class InvBiCGStab : public AbstractSolver<FT,
 
       double stop_time = omp_get_wtime();
       double best_time = stop_time - start_time;
-      masterPrintf("tuneCopyThreads: threads = %d, current_time=%g (s)\n",
-                   copyThreads,
-                   best_time);
+      masterPrintf(
+          "tuneCopyThreads: threads = %d, current_time=%g (s)\n", copyThreads, best_time);
 
       for (int threads = 2; threads <= geom.getNSIMT(); threads++) {
         start_time = omp_get_wtime();
@@ -402,11 +393,10 @@ class InvBiCGStab : public AbstractSolver<FT,
         stop_time = omp_get_wtime();
         double current_time = stop_time - start_time;
 
-        masterPrintf(
-            "tuneCopyThreads: threads = %d, current_time = %g (s), best=%g(s)\n",
-            threads,
-            current_time,
-            best_time);
+        masterPrintf("tuneCopyThreads: threads = %d, current_time = %g (s), best=%g(s)\n",
+                     threads,
+                     current_time,
+                     best_time);
         if (current_time < best_time) {
           best_time = current_time;
           copyThreads = threads;
@@ -426,9 +416,8 @@ class InvBiCGStab : public AbstractSolver<FT,
       }
       double stop_time = omp_get_wtime();
       double best_time = stop_time - start_time;
-      masterPrintf("tuneZeroThreads: threads = %d, current_time=%g (s)\n",
-                   zeroThreads,
-                   best_time);
+      masterPrintf(
+          "tuneZeroThreads: threads = %d, current_time=%g (s)\n", zeroThreads, best_time);
       for (int threads = 2; threads <= geom.getNSIMT(); threads++) {
         start_time = omp_get_wtime();
         for (int i = 0; i < iters; i++) {
@@ -437,11 +426,10 @@ class InvBiCGStab : public AbstractSolver<FT,
         stop_time = omp_get_wtime();
         double current_time = stop_time - start_time;
 
-        masterPrintf(
-            "tuneZeroThreads: threads = %d, current_time = %g (s), best=%g(s)\n",
-            threads,
-            current_time,
-            best_time);
+        masterPrintf("tuneZeroThreads: threads = %d, current_time = %g (s), best=%g(s)\n",
+                     threads,
+                     current_time,
+                     best_time);
         if (current_time < best_time) {
           best_time = current_time;
           zeroThreads = threads;
@@ -542,8 +530,7 @@ class InvBiCGStab : public AbstractSolver<FT,
       double alpha_cr[2] = {(double)1.0, (double)0.5};
       double start_time = omp_get_wtime();
       for (int i = 0; i < iters; i++) {
-        bicgstab_s_update<FT, V, S, compress12>(
-            alpha_cr, r, v, geom, sUpdateThreads);
+        bicgstab_s_update<FT, V, S, compress12>(alpha_cr, r, v, geom, sUpdateThreads);
       }
       double stop_time = omp_get_wtime();
       double best_time = stop_time - start_time;

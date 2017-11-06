@@ -140,15 +140,15 @@ class InvBiCGStab : public AbstractSolver<FT,
     zeroSpinor<FT, V, S, compress12, num_flav>(v, geom, zeroThreads);
 
     // rho_prev = 1
-    double rho_prev_c[2] = {(double)1, (double)0};
+    double rho_prev_c[2] = {1.0, 0.0};
 
     // alpha = 1
-    double alpha_c[2] = {(double)1, (double)0};
+    double alpha_c[2] = {1.0, 0.0};
 
     // omega = 1
-    double omega_c[2] = {(double)1, (double)0};
+    double omega_c[2] = {1.0, 0.0};
 
-    double rho_c[2] = {(double)0, (double)0};
+    double rho_c[2] = {0.0, 0.0};
 
     bool notConvP = true;
     int k = 1;
